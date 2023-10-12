@@ -15,6 +15,7 @@ import (
 	"github.com/alecthomas/chroma/formatters"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
@@ -55,6 +56,8 @@ type cli struct {
 	ItemFormat     string   `opts:"help=json is the only format currently"`
 	NoColors       bool     `opts:"short=c, help=disable json syntax highlighting"`
 	Verbose        bool     `opts:"help=print actions to stderr"`
+	Endpoint       string   `opts:"help=dynamodb endpoint url"`
+	Local          bool     `opts:"help=shorthand for --endpoint=http://localhost:8000"`
 	Statement      string   `opts:"mode=arg"`
 	Args           []string `opts:"mode=arg"`
 }
@@ -102,6 +105,14 @@ func run() error {
 	sess, err := session.NewSession()
 	if err != nil {
 		return err
+	}
+	if c.Local {
+		c.Endpoint = "http://localhost:8000"
+	}
+	if c.Endpoint != "" {
+		sess = sess.Copy(&aws.Config{
+			Endpoint: aws.String("http://localhost:8000"),
+		})
 	}
 	//setup dynamodb
 	db := dynamodb.New(sess)

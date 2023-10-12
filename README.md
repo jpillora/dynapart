@@ -7,8 +7,10 @@ A simple command-line interface to DynamoDB using PartiQL
 
 ### Demo
 
-```json
+```
 $ dynapart 'SELECT Author,ID FROM Books'
+```
+```json
 {"Author":"Ben Horowitz","ID":"5bv2Fs1JSCiVrDyNEoRkQ"}
 {"Author":"Matthew McConaughey","ID":"x66TMQ3gTf6yileYGQXvg"}
 {"Author":"Ernest Cline","ID":"jxUE0ftHTD6O4ogI2Dh0g"}
@@ -54,6 +56,8 @@ $ dynapart --help
   --item-format, -i  json is the only format currently
   --no-colors, -c    disable json syntax highlighting (default true)
   --verbose, -v      print actions to stderr
+  --endpoint, -e     dynamodb endpoint url
+  --local, -l        shorthand for --endpoint=http://localhost:8000
   --version          display version
   --help, -h         display help
 
